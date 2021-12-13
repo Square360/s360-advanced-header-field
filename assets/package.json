@@ -1,0 +1,81 @@
+{
+  "NAME": "s360-advanced-header-field",
+  "client": "Square360",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": "Square360, Inc.",
+  "contributors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "browserslist": [
+    "last 2 version"
+  ],
+  "scripts": {
+    "lint:package": "jsonlint -i package.json",
+    "sh:cleanup-node-modules": "sh ./.shell/cleanup-node-modules.sh",
+    "remove:config-js-files": "find config -type f -name '*.js' -delete",
+    "presetup:entrypoint": "node_modules/.bin/tsc ./config/setup/entry-point.setup.ts",
+    "setup:entrypoint": "node ./config/setup/entry-point.setup.js",
+    "postsetup:entrypoint": "yarn remove:config-js-files",
+    "start": "NODE_ENV=development webpack --mode=development --progress --watch",
+    "build": "NODE_ENV=production webpack --mode=production --progress",
+    "build:dev": "NODE_ENV=development webpack --mode=development --progress"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.3",
+    "@babel/plugin-transform-runtime": "7.12.1",
+    "@babel/preset-env": "7.12.1",
+    "@babel/preset-react": "7.12.7",
+    "@babel/preset-typescript": "7.12.7",
+    "@babel/runtime": "7.12.5",
+    "@types/copy-webpack-plugin": "6.3.0",
+    "@types/css-minimizer-webpack-plugin": "1.1.1",
+    "@types/jquery": "3.5.3",
+    "@types/mini-css-extract-plugin": "1.2.1",
+    "@types/node": "14.14.9",
+    "@types/readline-sync": "1.4.3",
+    "@types/shelljs": "0.8.8",
+    "@types/svg-spritemap-webpack-plugin": "3.5.0",
+    "@types/tapable": "1.0.0",
+    "@types/terser-webpack-plugin": "5.0.2",
+    "@types/webpack": "4.41.23",
+    "@types/yargs": "15.0.10",
+    "autoprefixer": "9.8.6",
+    "babel-loader": "8.1.0",
+    "chalk": "4.1.0",
+    "clean-webpack-plugin": "3.0.0",
+    "copy-webpack-plugin": "6.2.1",
+    "css-loader": "5.0.0",
+    "css-minimizer-webpack-plugin": "1.1.5",
+    "file-loader": "6.1.1",
+    "image-webpack-loader": "7.0.1",
+    "imports-loader": "1.2.0",
+    "jsonlint": "1.6.2",
+    "mini-css-extract-plugin": "1.2.0",
+    "node-sass": "4.14.1",
+    "postcss-loader": "4.0.4",
+    "postcss-scss": "3.0.2",
+    "readline-sync": "1.4.10",
+    "sass": "1.32.8",
+    "sass-loader": "10.0.4",
+    "shelljs": "0.8.4",
+    "style-loader": "2.0.0",
+    "svg-spritemap-webpack-plugin": "3.7.1",
+    "ts-node": "9.0.0",
+    "typescript": "4.0.3",
+    "typescript-compiler": "1.4.1-2",
+    "url-loader": "4.1.1",
+    "webpack": "5.2.0",
+    "webpack-cli": "4.1.0",
+    "yargs": "16.1.0"
+  },
+  "dependencies": {
+    "date-fns": "2.16.1",
+    "s360-fundamental-toolkit": "git+https://bitbucket.org/sq360_sysadmin/s360-fundamental-toolkit.git#5.0.0"
+  },
+  "sideEffects": false
+}

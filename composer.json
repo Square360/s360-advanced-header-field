@@ -1,0 +1,13 @@
+{
+    "name": "square360/s360_advanced_header_field",
+    "description": "Square360 Advanced Header Field",
+    "type": "drupal-module",
+    "keywords": [
+        "Drupal",
+        "Field",
+        "HTML Markup"
+    ],
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "version": "1.0.0"
+}

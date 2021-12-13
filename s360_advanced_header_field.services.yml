@@ -1,0 +1,5 @@
+services:
+  s360_advanced_header_field.function:
+    class: Drupal\s360_advanced_header_field\TwigExtension\TwigFunctionExtension
+    tags:
+      - { name: twig.extension }

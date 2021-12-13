@@ -1,0 +1,7 @@
+s360-advanced-header-field:
+  version: VERSION
+  css:
+    theme:
+      assets/dist/css/s360-advanced-header-field.min.css: {}
+  js:
+    assets/dist/js/s360-advanced-header-field.min.js: {}
