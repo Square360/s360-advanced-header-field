@@ -38,8 +38,8 @@ class HtmlMarkupFormatter extends LinkFormatter {
       '#type' => 'select',
       '#title' => $this->t('HTML Tag'),
       '#options' => [
-        'header' => 'Semantic (header)',
-        'div' => 'Generic (div)',
+        'header' => $this->t('Semantic (header)'),
+        'div' => $this->t('Generic (div)'),
       ],
       '#default_value' => $this->getSetting('tag') ?? 'header',
     ];
@@ -54,7 +54,7 @@ class HtmlMarkupFormatter extends LinkFormatter {
     $settings = $this->getSettings();
 
     $summary = [];
-    $summary[] = t('Render as @tag', ['@tag' => ucfirst($settings['tag'])]);
+    $summary[] = $this->t('Render as @tag', ['@tag' => ucfirst($settings['tag'])]);
 
     return $summary;
   }
@@ -66,39 +66,41 @@ class HtmlMarkupFormatter extends LinkFormatter {
     $element = [];
 
     foreach ($items as $delta => $item) {
-      $tag = $this->getSettings()['tag'];
+      if ($item->title !== '') {
+        $tag = $this->getSettings()['tag'];
 
-      // Get all the values from the item, so it can be added to without
-      // overrwiting existing values.
-      $item_value = $item->getValue();
+        // Get all the values from the item, so it can be added to without
+        // overrwiting existing values.
+        $item_value = $item->getValue();
 
-      // Create a link with the URL and title, otherwise create a span.
-      $item_value['heading_text'] = [
-        '#type' => 'link',
-        '#title' => $item->title,
-        '#url' => $this->buildUrl($item),
-        '#attributes' => [],
-      ];
+        // Create a link with the URL and title, otherwise create a span.
+        $item_value['heading_text'] = [
+          '#type' => 'link',
+          '#title' => $item->title,
+          '#url' => $this->buildUrl($item),
+          '#attributes' => [],
+        ];
 
-      if ($item->uri !== 'route:<nolink>') {
-        if ($item->options['new_window']) {
-          $item_value['heading_text']['#attributes']['target'] = '_blank';
+        if ($item->uri !== 'route:<nolink>') {
+          if ($item->options['new_window']) {
+            $item_value['heading_text']['#attributes']['target'] = '_blank';
+          }
         }
+
+        $item_value['options']['tag'] = $tag;
+
+        // Remove keys from the $item_value that aren't needed anymore.
+        unset($item_value['title']);
+        unset($item_value['options']['new_window']);
+
+        // Update the item's value.
+        $item->setValue($item_value);
+
+        $element[$delta] = [
+          '#item' => $item,
+          '#theme' => 'advanced_header_field',
+        ];
       }
-
-      $item_value['options']['tag'] = $tag;
-
-      // Remove keys from the $item_value that aren't needed anymore.
-      unset($item_value['title']);
-      unset($item_value['options']['new_window']);
-
-      // Update the item's value.
-      $item->setValue($item_value);
-
-      $element[$delta] = [
-        '#item' => $item,
-        '#theme' => 'advanced_header_field',
-      ];
     }
 
     return $element;

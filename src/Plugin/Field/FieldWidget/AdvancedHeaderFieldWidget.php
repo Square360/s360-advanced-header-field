@@ -56,7 +56,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Start heading group.
     $element['text'] = [
       '#type' => 'fieldset',
-      '#title' => t('Text'),
+      '#title' => $this->t('Text'),
       '#attributes' => [
         'class' => ['s360-advanced-header-field__text'],
       ],
@@ -65,7 +65,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     $semantic_tag_options = array_intersect_key(AdvancedHeaderFieldItem::AVAILABLE_TAGS, array_flip($this->getFieldSetting('allowed_tags')));
 
     $element['text']['heading_tag'] = [
-      '#title' => t('Semantic Tag'),
+      '#title' => $this->t('Semantic tag'),
       '#type' => 'select',
       '#options' => $semantic_tag_options,
       '#default_value' => $item->options['heading_tag'] ?? 'h2',
@@ -75,7 +75,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     $element['text']['title'] = $element['title'];
 
     $element['text']['subtitle'] = [
-      '#title' => t('Subtitle text'),
+      '#title' => $this->t('Subtitle text'),
       '#type' => 'textfield',
       '#default_value' => $item->subtitle ?? '',
     ];
@@ -83,7 +83,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Start options group.
     $element['options'] = [
       '#type' => 'fieldset',
-      '#title' => t('Options'),
+      '#title' => $this->t('Options'),
       '#attributes' => [
         'class' => ['s360-advanced-header-field__options'],
       ],
@@ -92,7 +92,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Start display options.
     $element['options']['display_options'] = [
       '#type' => 'details',
-      '#title' => t('Display options'),
+      '#title' => $this->t('Display options'),
       '#open' => (
         (isset($item->options['visually_hidden']) && $item->options['visually_hidden']) ||
         (isset($item->options['center']) && $item->options['center']) ||
@@ -106,23 +106,23 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     ];
 
     $element['options']['display_options']['visually_hidden'] = [
-      '#title' => t('Visually Hidden'),
+      '#title' => $this->t('Visually hidden'),
       '#type' => 'checkbox',
       '#default_value' => $item->options['visually_hidden'] ?? FALSE,
-      '#description' => t('When checked the text will be hidden from display, but not screen readers.'),
+      '#description' => $this->t('When checked the text will be hidden from display, but not screen readers.'),
     ];
 
     $element['options']['display_options']['size'] = [
-      '#title' => t('Size'),
+      '#title' => $this->t('Size'),
       '#type' => 'select',
       '#options' => AdvancedHeaderFieldWidget::DEFAULT_SIZES,
-      '#empty_option' => t('- Select -'),
+      '#empty_option' => $this->t('- Select -'),
       '#default_value' => $item->options['size'] ?? '',
     ];
 
     if (count($this->getStyleOptions())) {
       $element['options']['display_options']['styles'] = [
-        '#title' => t('Styles'),
+        '#title' => $this->t('Styles'),
         '#type' => 'checkboxes',
         '#options' => $this->getStyleOptions(),
         '#default_value' => $item->options['styles'] ?? [],
@@ -135,7 +135,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Start link group.
     $element['options']['link_options'] = [
       '#type' => 'details',
-      '#title' => t('Link options'),
+      '#title' => $this->t('Link options'),
       '#open' => (
         (isset($item->options['new_window']) && $item->options['new_window']) ||
         $element['uri']['#default_value'] !== '<nolink>'
@@ -148,10 +148,10 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Move the 'uri' element into the link_options.
     $element['options']['link_options']['uri'] = $element['uri'];
     $element['options']['link_options']['new_window'] = [
-      '#title' => t('Open link in new window.'),
+      '#title' => $this->t('Open link in new window.'),
       '#type' => 'checkbox',
       '#default_value' => $item->options['new_window'] ?? FALSE,
-      '#description' => t("Check this to force link to open in new window."),
+      '#description' => $this->t("Check this to force link to open in new window."),
     ];
 
     // Since we've moved the title and uri into groups, hide the original.
