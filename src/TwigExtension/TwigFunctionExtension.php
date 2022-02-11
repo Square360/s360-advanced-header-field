@@ -39,6 +39,8 @@ class TwigFunctionExtension extends AbstractExtension {
 
     $classes = [];
 
+    $classes[] = $base_class . '--heading-tag-' . $options['heading_tag'];
+
     if ($options['size']) {
       $classes[] = $base_class . '--size-' . $options['size'];
     }
