@@ -9,14 +9,10 @@
     fieldset:not(.fieldgroup) {
       background-color: #f5f5f5;
       border: none;
-      margin: 0 0 20px 0;
+      margin: 0;
       padding: 55px 20px 20px 20px;
       min-width: fit-content;
       position: relative;
-
-      &:last-of-type {
-        margin-bottom: 0;
-      }
     }
   }
 
@@ -64,14 +60,20 @@
         margin-bottom: 0;
       }
 
-      &-styles .form-checkboxes {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      &-styles {
+        .form-type-checkbox .form-checkbox {
+          margin-left: 0;
+        }
 
-        .option,
-        .form-item {
-          margin-bottom: 0;
+        .form-checkboxes {
+          display: grid;
+          gap: 10px;
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+          .option,
+          .form-item {
+            margin-bottom: 0;
+          }
         }
       }
     }
