@@ -2,4 +2,4 @@ s360_advanced_header_field.admin:
   version: VERSION
   css:
     theme:
-      assets/dist/css/s360-advanced-header-field.min.css: {}
+      assets/dist/css/s360-advanced-header-field.admin.min.css: {}
