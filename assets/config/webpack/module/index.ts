@@ -1,1 +1,0 @@
-export { WEBPACK_MODULE_RULES } from './rules';
