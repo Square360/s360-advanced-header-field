@@ -68,7 +68,7 @@ function s360_advanced_header_field_help($route_name, RouteMatchInterface $route
 function s360_advanced_header_field_page_attachments_alter(array &$attachments) {
   // Attach the "admin" library only when the route IS the admin.
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $attachments['#attached']['library'][] = 's360_advanced_header_field/s360-advanced-header-field';
+    $attachments['#attached']['library'][] = 's360_advanced_header_field/s360_advanced_header_field.admin';
   }
 }
 

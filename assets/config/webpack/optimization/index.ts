@@ -1,1 +1,0 @@
-export { WEBPACK_OPTIMIZATION_MINIMIZER } from './minimizer';
