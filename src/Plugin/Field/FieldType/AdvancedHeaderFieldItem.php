@@ -17,7 +17,7 @@ use Drupal\link\Plugin\Field\FieldType\LinkItem;
  *   description = @Translation("Advanced Header Field"),
  *   category = @Translation("Custom"),
  *   default_widget = "advanced_header_field",
- *   default_formatter = "advanced_header_field_string_markup",
+ *   default_formatter = "advanced_header_field_html",
  *   cardinality = 1,
  * )
  */
