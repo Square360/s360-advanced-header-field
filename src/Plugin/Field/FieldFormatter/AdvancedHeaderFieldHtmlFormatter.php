@@ -7,17 +7,17 @@ use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'advanced_header_field' formatter.
+ * Plugin implementation of the 'advanced_header_field' html formatter.
  *
  * @FieldFormatter(
- *   id = "advanced_header_field_string_markup",
+ *   id = "advanced_header_field_html",
  *   label = @Translation("HTML Markup"),
  *   field_types = {
  *     "advanced_header_field"
  *   }
  * )
  */
-class HtmlMarkupFormatter extends LinkFormatter {
+class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
 
   /**
    * {@inheritdoc}
