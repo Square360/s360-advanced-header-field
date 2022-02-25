@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\s360_advanced_header_field\Plugin\Field\FieldType\AdvancedHeaderFieldItem;
 
 /**
  * Implements hook_help().
@@ -22,30 +23,30 @@ function s360_advanced_header_field_help($route_name, RouteMatchInterface $route
       $output .= '<p>&nbsp;</p>';
 
       $output .= '<h3>' . t('Classes') . '</h3>';
-      $output .= t('<p><code>[base-class]</code> which defaults to <strong><code>advanced-header-field</code></strong> can be overwritten in the hook <strong><code>THEME_preprocess_advanced_header_field</code></strong>.');
+      $output .= t('<p><code>[block-class]</code> which defaults to <strong><code>advanced-header-field</code></strong> can be overwritten in the hook <strong><code>THEME_preprocess_advanced_header_field</code></strong>.');
       $output .= '<p>' . t('All classes are added as "modifers" to the top level element.') . '</p>';
-      $output .= '<p>' . t('NOTE: There are no base styles provided by this module, all styles must be provided from your Drupal theme.') . '</p>';
+      $output .= '<p>' . t('NOTE: There are no styles provided by this module, all styles must be provided from the Drupal theme.') . '</p>';
 
       $output .= '<h4>' . t('Built-in Classes') . '</h4>';
 
       $output .= '<h5>' . t('Modifiers') . '</h5>';
       $output .= '<ul>';
-      $output .= '<li>.[base-class]--size-h1</li>';
-      $output .= '<li>.[base-class]--size-h2</li>';
-      $output .= '<li>.[base-class]--size-h3</li>';
-      $output .= '<li>.[base-class]--size-h4</li>';
-      $output .= '<li>.[base-class]--size-h5</li>';
-      $output .= '<li>.[base-class]--size-h6</li>';
+      $output .= '<li>.[block-class]--size-h1</li>';
+      $output .= '<li>.[block-class]--size-h2</li>';
+      $output .= '<li>.[block-class]--size-h3</li>';
+      $output .= '<li>.[block-class]--size-h4</li>';
+      $output .= '<li>.[block-class]--size-h5</li>';
+      $output .= '<li>.[block-class]--size-h6</li>';
       $output .= '</ul>';
 
       $output .= '<h5>' . t('Elements') . '</h5>';
       $output .= '<ul>';
-      $output .= '<li>.[base-class]__heading</li>';
-      $output .= '<li>.[base-class]__subtitle</li>';
+      $output .= '<li>.[block-class]__heading</li>';
+      $output .= '<li>.[block-class]__subtitle</li>';
       $output .= '</ul>';
 
-      $output .= '<h4>' . t('Custom Classes') . '</h4>';
-      $output .= '<p>' . t('"Field settings: Custom Styles" will be rendered as <code>.[base-class]--style-[CUSTOM_STYLE_KEY]</code>.') . '</p>';
+      $output .= '<h4>' . t('Style Classes') . '</h4>';
+      $output .= '<p>' . t('Styles will be rendered as <code>.[block-class]--style-[CUSTOM_STYLE_KEY]</code>.') . '</p>';
 
       $output .= '<p>&nbsp;</p>';
 
@@ -53,22 +54,12 @@ function s360_advanced_header_field_help($route_name, RouteMatchInterface $route
 
       $output .= '<h4>' . t('HTML Markup') . '</h4>';
       $output .= '<p>' . t('This is the default formatter for the field. It will wrap the all the elements in HTML elements.') . '</p>';
-      $output .= '<p>' . t('You can select what HTML tag the top level element gets; Semantic (header) or Generic (div).') . '</p>';
+      $output .= '<p>' . t('You can select either Semantic (header) or Generic (div) for the HTML tag the top level element gets.') . '</p>';
 
       $output .= '<h4>' . t('Plain text') . '</h4>';
       $output .= '<p>' . t('This formatter will display the header title and heading tag only with no HTML markup. This formatter will typical be used in previews for content editors.') . '</p>';
 
       return $output;
-  }
-}
-
-/**
- * Implements hook_page_attachments_alter().
- */
-function s360_advanced_header_field_page_attachments_alter(array &$attachments) {
-  // Attach the "admin" library only when the route IS the admin.
-  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $attachments['#attached']['library'][] = 's360_advanced_header_field/s360_advanced_header_field.admin';
   }
 }
 
@@ -89,17 +80,58 @@ function s360_advanced_header_field_theme() {
  * Prepares variables for advanced-header-field template.
  */
 function template_preprocess_advanced_header_field(&$variables) {
-  $variables['tag'] = $variables['elements']['#item']->options['tag'];
-  $variables['attributes'] = new Attribute([
-    'class' => 'advanced-header-field',
-  ]);
+  $elements = $variables['elements'];
+  $block_css_class = 'advanced-header-field';
 
-  $variables['heading'] = [];
-  $variables['heading']['tag'] = $variables['elements']['#item']->options['heading_tag'];
-  $variables['heading']['attributes'] = new Attribute([]);
-  $variables['heading']['text'] = $variables['elements']['#item']->heading_text;
+  if (isset($elements['#item'])) {
+    $item = $elements['#item'];
 
-  $variables['subtitle'] = [];
-  $variables['subtitle']['attributes'] = new Attribute([]);
-  $variables['subtitle']['text'] = $variables['elements']['#item']->subtitle;
+    // This is the containing tag (header or div).
+    $variables['tag'] = $item->options['tag'];
+    $variables['attributes'] = new Attribute([
+      'class' => [
+        'advanced-header-field',
+        _get_advanced_header_field_modifier_css_classes($block_css_class, $item),
+      ],
+    ]);
+
+    $variables['heading'] = [];
+    $variables['heading']['tag'] = $item->options['heading_tag'];
+    $variables['heading']['attributes'] = new Attribute([
+      'class' => $block_css_class . '__heading'
+    ]);
+    $variables['heading']['text'] = $item->heading_text;
+
+    $variables['subtitle'] = [];
+    $variables['subtitle']['attributes'] = new Attribute([
+      'class' => $block_css_class . '__subtitle'
+    ]);
+    $variables['subtitle']['text'] = $item->subtitle;
+  }
+}
+
+/**
+ * Formats the advanced_header_field options into modifier classes.
+ *
+ * @param string $block_css_class
+ *   The block class for the advanced_header_field.
+ * @param AdvancedHeaderFieldItem $item
+ *   The entire advanced_header_field object.
+ * @return string
+ *   The modifier classes for the advanced_header_field.
+ */
+function _get_advanced_header_field_modifier_css_classes(string $block_css_class, AdvancedHeaderFieldItem $item) {
+  $modifier_css_classes = [];
+
+  $modifier_css_classes[] = $block_css_class . '--heading-tag-' . $item->options['heading_tag'];
+
+  if ($item->options['size']) {
+    $modifier_css_classes[] = $block_css_class . '--size-' . $item->options['size'];
+  }
+
+  foreach ($item->options['styles'] as $style) {
+    $modifier_css_classes[] = $block_css_class . '--style-' . $style;
+  }
+
+  return implode(' ', $modifier_css_classes);
 }
