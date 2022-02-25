@@ -4,26 +4,14 @@
  * Default theme implementation to display a paragraph.
  *
  * Available variables:
- * - tag: The HTML tag which wraps the heading and subtitle elements. Choices
- *   are "<header>" default, or "<div>".
- * - attributes: HTML attributes for the containing element.
- *   The attributes.class element contains the "base-class" and any additional
- *   classes provided by the THEME_hook. Built-in classes are applied using
- *   the get_header_classes() function.
- *   See Drupal\s360_advanced_header_field\TwigExtension\TwigFunctionExtension
- *   for a full list of built-in classes.
+ * - tag: The HTML tag which wraps the heading and subtitle elements.
+ * - attributes: A list of HTML attributes for the containing element.
  * - heading:
- *   - attributes: HTML attributes for the containing element.
- *     By default this inherits the "base-class" to create a BEM syle class.
- *     The attributes.class element can provide additional classes from the
- *     THEME_hook. These are outside the BEM structure.
+ *   - attributes: A list of HTML attributes for the heading element.
  *   - tag: The HTML tag to wrap the heading text.
  *   - text: The text of the heading.
  * - subtitle:
- *   - attributes: HTML attributes for the containing element.
- *     By default this inherits the "base-class" to create a BEM syle class.
- *     The attributes.class element can provide additional classes from the
- *     THEME_hook. These are outside the BEM structure.
+ *   - attributes: A list of HTML attributes for the subtitle element.
  *   - text: The text of the subtitle.
  *
  * @see template_preprocess_advanced_header_field()
@@ -31,15 +19,15 @@
  * @ingroup themeable
  */
 #}
-<{{ tag }}{{ attributes.addClass(get_header_classes()) }}>
+<{{ tag }}{{ attributes }}>
   {% if heading.text %}
-    <{{ heading.tag }}{{ heading.attributes.addClass([attributes.class.0 ~ '__heading']) }}>
+    <{{ heading.tag }}{{ heading.attributes }}>
       {{ heading.text }}
     </{{ heading.tag }}>
   {% endif %}
 
   {% if subtitle.text %}
-    <div{{ subtitle.attributes.addClass([attributes.class.0 ~ '__subtitle']) }}>
+    <div{{ subtitle.attributes }}>
       {{ subtitle.text }}
     </div>
   {% endif %}
