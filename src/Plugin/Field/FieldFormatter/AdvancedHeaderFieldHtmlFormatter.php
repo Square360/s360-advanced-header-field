@@ -67,27 +67,34 @@ class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
 
     foreach ($items as $delta => $item) {
       if ($item->title !== '') {
-        $tag = $this->getSettings()['tag'];
-
         // Get all the values from the item, so it can be added to without
         // overrwiting existing values.
         $item_value = $item->getValue();
 
-        // Create a link with the URL and title, otherwise create a span.
-        $item_value['heading_text'] = [
-          '#type' => 'link',
-          '#title' => $item->title,
-          '#url' => $this->buildUrl($item),
-          '#attributes' => [],
-        ];
+        $parent_entity = $item->getParent()->getParent()->getEntity();
+        $parent_entity_bundle = $parent_entity->bundle();
+        $parent_entity_id = $parent_entity->id();
+        $item_value['heading_id'] = "heading-$parent_entity_bundle-$parent_entity_id";
 
+        // Create a link with the URL and title.
         if ($item->uri !== 'route:<nolink>') {
+          $item_value['heading_text'] = [
+            '#type' => 'link',
+            '#title' => $item->title,
+            '#url' => $this->buildUrl($item),
+            '#attributes' => [],
+          ];
+
           if ($item->options['new_window']) {
             $item_value['heading_text']['#attributes']['target'] = '_blank';
           }
         }
+        // No link, just text.
+        else {
+          $item_value['heading_text'] = $item->title;
+        }
 
-        $item_value['options']['tag'] = $tag;
+        $item_value['options']['tag'] = $this->getSettings()['tag'];
 
         // Remove keys from the $item_value that aren't needed anymore.
         unset($item_value['title']);

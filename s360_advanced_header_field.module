@@ -88,25 +88,23 @@ function template_preprocess_advanced_header_field(&$variables) {
 
     // This is the containing tag (header or div).
     $variables['tag'] = $item->options['tag'];
-    $variables['attributes'] = new Attribute([
-      'class' => [
-        'advanced-header-field',
-        _get_advanced_header_field_modifier_css_classes($block_css_class, $item),
-      ],
-    ]);
+    $variables['attributes'] = new Attribute();
+    $variables['attributes']['class'] = [
+      $block_css_class,
+      _get_advanced_header_field_modifier_css_classes($block_css_class, $item),
+    ];
 
     $variables['heading'] = [];
     $variables['heading']['tag'] = $item->options['heading_tag'];
-    $variables['heading']['attributes'] = new Attribute([
-      'class' => $block_css_class . '__heading'
-    ]);
     $variables['heading']['text'] = $item->heading_text;
+    $variables['heading']['attributes'] = new Attribute();
+    $variables['heading']['attributes']['id'] = $item->heading_id;
+    $variables['heading']['attributes']['class'] = $block_css_class . '__heading';
 
     $variables['subtitle'] = [];
-    $variables['subtitle']['attributes'] = new Attribute([
-      'class' => $block_css_class . '__subtitle'
-    ]);
     $variables['subtitle']['text'] = $item->subtitle;
+    $variables['subtitle']['attributes'] = new Attribute();
+    $variables['subtitle']['attributes']['class'] = $block_css_class . '__subtitle';
   }
 }
 
