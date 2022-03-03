@@ -71,10 +71,22 @@ class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
         // overrwiting existing values.
         $item_value = $item->getValue();
 
-        $parent_entity = $item->getParent()->getParent()->getEntity();
-        $parent_entity_bundle = $parent_entity->bundle();
-        $parent_entity_id = $parent_entity->id();
-        $item_value['heading_id'] = "heading-$parent_entity_bundle-$parent_entity_id";
+        /** @var Drupal\Core\Field\FieldItemList $field_item_list */
+        $field_item_list = $item->getParent();
+
+        if ($field_item_list !== NULL) {
+          /** @var Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
+          $entity_adapter = $field_item_list->getParent();
+
+          if ($entity_adapter !== NULL) {
+            // Get the entity type from the adapter.
+            $entity = $entity_adapter->getEntity();
+
+            $entity_bundle = $entity->bundle();
+            $entity_id = $entity->id();
+            $item_value['heading_id'] = "heading-$entity_bundle-$entity_id";
+          }
+        }
 
         // Create a link with the URL and title.
         if ($item->uri !== 'route:<nolink>') {
