@@ -61,8 +61,12 @@
       padding-bottom: 20px;
     }
 
-    .form-item:last-child {
-      margin-bottom: 0;
+    .form-item {
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
 
     &--display {
