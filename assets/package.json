@@ -16,9 +16,9 @@
   ],
   "scripts": {
     "start": "yarn build --watch",
-    "build": "node_modules/.bin/sass ./src/scss/s360-advanced-header-field.admin.scss ./dist/css/s360-advanced-header-field.admin.min.css --trace --no-source-map",
+    "build": "sass ./src/scss/s360-advanced-header-field.admin.scss ./dist/css/s360-advanced-header-field.admin.min.css --trace --no-source-map",
     "build:prod": "yarn build; yarn uglifycss",
-    "uglifycss": "node_modules/.bin/uglifycss ./dist/css/s360-advanced-header-field.admin.min.css --output ./dist/css/s360-advanced-header-field.admin.min.css"
+    "uglifycss": "uglifycss ./dist/css/s360-advanced-header-field.admin.min.css --output ./dist/css/s360-advanced-header-field.admin.min.css"
   },
   "devDependencies": {
     "sass": "1.32.8",
