@@ -7,7 +7,6 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Template\Attribute;
-use Drupal\s360_advanced_header_field\Plugin\Field\FieldType\AdvancedHeaderFieldItem;
 
 /**
  * Implements hook_help().
@@ -113,12 +112,12 @@ function template_preprocess_advanced_header_field(&$variables) {
  *
  * @param string $block_css_class
  *   The block class for the advanced_header_field.
- * @param AdvancedHeaderFieldItem $item
- *   The entire advanced_header_field object.
+ * @param object $item
+ *   The entire AdvancedHeaderFieldItem object or a generic object.
  * @return string
  *   The modifier classes for the advanced_header_field.
  */
-function _get_advanced_header_field_modifier_css_classes(string $block_css_class, AdvancedHeaderFieldItem $item) {
+function _get_advanced_header_field_modifier_css_classes(string $block_css_class, object $item) {
   $modifier_css_classes = [];
 
   $modifier_css_classes[] = $block_css_class . '--heading-tag-' . $item->options['heading_tag'];
