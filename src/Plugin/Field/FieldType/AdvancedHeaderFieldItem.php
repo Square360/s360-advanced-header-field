@@ -73,7 +73,7 @@ class AdvancedHeaderFieldItem extends LinkItem {
     $properties = parent::propertyDefinitions($field_definition);
 
     $properties['uri'] = DataDefinition::create('uri')
-      ->setLabel(t('URI'))
+      ->setLabel($this->t('URI'))
       ->setRequired(FALSE);
 
     return $properties;
