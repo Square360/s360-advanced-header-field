@@ -31,7 +31,9 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
   ];
 
   // Define all default styles.
-  const DEFAULT_STYLES = [];
+  const DEFAULT_STYLES = [
+    'centered' => 'Centered',
+  ];
 
   /**
    * {@inheritdoc}
@@ -46,6 +48,9 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     ];
     $element['#type'] = 'details';
     $element['#open'] = TRUE;
+    $element['#attached'] = [
+      'library' => ['s360_advanced_header_field/s360_advanced_header_field.admin'],
+    ];
 
     // Rename the title field's title.
     $element['title']['#title'] = 'Heading text';
@@ -56,7 +61,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     // Start heading group.
     $element['text'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Text'),
+      '#title' => '',
       '#attributes' => [
         'class' => ['s360-advanced-header-field__text'],
       ],
@@ -80,17 +85,8 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
       '#default_value' => $item->subtitle ?? '',
     ];
 
-    // Start options group.
-    $element['options'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Options'),
-      '#attributes' => [
-        'class' => ['s360-advanced-header-field__options'],
-      ],
-    ];
-
     // Start display options.
-    $element['options']['display_options'] = [
+    $element['display_options'] = [
       '#type' => 'details',
       '#title' => $this->t('Display options'),
       '#open' => (
@@ -101,18 +97,21 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
         (isset($item->options['styles']) && $item->options['styles'])
       ) ?? FALSE,
       '#attributes' => [
-        'class' => ['s360-advanced-header-field__options-display-options'],
+        'class' => [
+          's360-advanced-header-field__options',
+          's360-advanced-header-field__options--display',
+        ],
       ],
     ];
 
-    $element['options']['display_options']['visually_hidden'] = [
+    $element['display_options']['visually_hidden'] = [
       '#title' => $this->t('Visually hidden'),
       '#type' => 'checkbox',
       '#default_value' => $item->options['visually_hidden'] ?? FALSE,
       '#description' => $this->t('When checked the text will be hidden from display, but not screen readers.'),
     ];
 
-    $element['options']['display_options']['size'] = [
+    $element['display_options']['size'] = [
       '#title' => $this->t('Size'),
       '#type' => 'select',
       '#options' => AdvancedHeaderFieldWidget::DEFAULT_SIZES,
@@ -120,20 +119,15 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
       '#default_value' => $item->options['size'] ?? '',
     ];
 
-    if (count($this->getStyleOptions())) {
-      $element['options']['display_options']['styles'] = [
-        '#title' => $this->t('Styles'),
-        '#type' => 'checkboxes',
-        '#options' => $this->getStyleOptions(),
-        '#default_value' => $item->options['styles'] ?? [],
-        '#attributes' => [
-          'class' => ['s360-advanced-header-field__options-display-options-styles'],
-        ],
-      ];
-    }
+    $element['display_options']['styles'] = [
+      '#title' => $this->t('Styles'),
+      '#type' => 'checkboxes',
+      '#options' => $this->getStyleOptions(),
+      '#default_value' => $item->options['styles'] ?? [],
+    ];
 
     // Start link group.
-    $element['options']['link_options'] = [
+    $element['link_options'] = [
       '#type' => 'details',
       '#title' => $this->t('Link options'),
       '#open' => (
@@ -141,13 +135,16 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
         $element['uri']['#default_value'] !== '<nolink>'
       ) ?? FALSE,
       '#attributes' => [
-        'class' => ['s360-advanced-header-field__options-link-options'],
+        'class' => [
+          's360-advanced-header-field__options',
+          's360-advanced-header-field__options--link',
+        ],
       ],
     ];
 
     // Move the 'uri' element into the link_options.
-    $element['options']['link_options']['uri'] = $element['uri'];
-    $element['options']['link_options']['new_window'] = [
+    $element['link_options']['uri'] = $element['uri'];
+    $element['link_options']['new_window'] = [
       '#title' => $this->t('Open link in new window.'),
       '#type' => 'checkbox',
       '#default_value' => $item->options['new_window'] ?? FALSE,
@@ -171,12 +168,12 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     $values = $form_state->getValue($element['#parents']);
 
     // Change empty uri to '<nolink>'.
-    if ($element['options']['link_options']['uri']['#value'] === '') {
+    if ($element['link_options']['uri']['#value'] === '') {
       $values['uri'] = '<nolink>';
     }
     // Set the uri with the uri's value from the link_options.
     else {
-      $values['uri'] = $element['options']['link_options']['uri']['#value'];
+      $values['uri'] = $element['link_options']['uri']['#value'];
     }
 
     // Set the title with the title's value from the text.
@@ -195,13 +192,13 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     $values['options'] = [
       'heading_tag' => $element['text']['heading_tag']['#value'],
 
-      'visually_hidden' => $element['options']['display_options']['visually_hidden']['#value'],
-      'size' => $element['options']['display_options']['size']['#value'],
-      'styles' => isset($element['options']['display_options']['styles'])
-      ? array_keys($element['options']['display_options']['styles']['#value'])
+      'visually_hidden' => $element['display_options']['visually_hidden']['#value'],
+      'size' => $element['display_options']['size']['#value'],
+      'styles' => isset($element['display_options']['styles'])
+      ? array_keys($element['display_options']['styles']['#value'])
       : [],
 
-      'new_window' => $element['options']['link_options']['new_window']['#value'],
+      'new_window' => $element['link_options']['new_window']['#value'],
     ];
 
     $form_state->setValueForElement($element, $values);
@@ -220,7 +217,7 @@ class AdvancedHeaderFieldWidget extends LinkWidget {
     $style_options = AdvancedHeaderFieldWidget::DEFAULT_STYLES;
 
     // Get the custom_styles and apply some function to normalize them.
-    $custom_styles = explode("\n", $this->getFieldSetting('custom_styles'));
+    $custom_styles = explode("\r\n", $this->getFieldSetting('custom_styles'));
     $custom_styles = array_map('trim', $custom_styles);
     $custom_styles = array_filter($custom_styles, 'strlen');
 

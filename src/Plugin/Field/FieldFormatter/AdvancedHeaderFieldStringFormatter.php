@@ -8,7 +8,7 @@ use Drupal\s360_advanced_header_field\Plugin\Field\FieldType\AdvancedHeaderField
 use Drupal\Core\Field\FormatterBase;
 
 /**
- * Plugin implementation of the 'advanced_header_field' formatter.
+ * Plugin implementation of the 'advanced_header_field' string formatter.
  *
  * @FieldFormatter(
  *   id = "advanced_header_field_string",
@@ -18,7 +18,7 @@ use Drupal\Core\Field\FormatterBase;
  *   }
  * )
  */
-class StringFormatter extends FormatterBase {
+class AdvancedHeaderFieldStringFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}

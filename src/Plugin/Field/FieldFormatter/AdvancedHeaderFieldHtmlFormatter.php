@@ -7,17 +7,17 @@ use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'advanced_header_field' formatter.
+ * Plugin implementation of the 'advanced_header_field' html formatter.
  *
  * @FieldFormatter(
- *   id = "advanced_header_field_string_markup",
+ *   id = "advanced_header_field_html",
  *   label = @Translation("HTML Markup"),
  *   field_types = {
  *     "advanced_header_field"
  *   }
  * )
  */
-class HtmlMarkupFormatter extends LinkFormatter {
+class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
 
   /**
    * {@inheritdoc}
@@ -67,27 +67,46 @@ class HtmlMarkupFormatter extends LinkFormatter {
 
     foreach ($items as $delta => $item) {
       if ($item->title !== '') {
-        $tag = $this->getSettings()['tag'];
-
         // Get all the values from the item, so it can be added to without
         // overrwiting existing values.
         $item_value = $item->getValue();
 
-        // Create a link with the URL and title, otherwise create a span.
-        $item_value['heading_text'] = [
-          '#type' => 'link',
-          '#title' => $item->title,
-          '#url' => $this->buildUrl($item),
-          '#attributes' => [],
-        ];
+        /** @var Drupal\Core\Field\FieldItemList $field_item_list */
+        $field_item_list = $item->getParent();
 
+        if ($field_item_list !== NULL) {
+          /** @var Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entity_adapter */
+          $entity_adapter = $field_item_list->getParent();
+
+          if ($entity_adapter !== NULL) {
+            // Get the entity type from the adapter.
+            $entity = $entity_adapter->getEntity();
+
+            $entity_bundle = $entity->bundle();
+            $entity_id = $entity->id();
+            $item_value['heading_id'] = "heading-$entity_bundle-$entity_id";
+          }
+        }
+
+        // Create a link with the URL and title.
         if ($item->uri !== 'route:<nolink>') {
+          $item_value['heading_text'] = [
+            '#type' => 'link',
+            '#title' => $item->title,
+            '#url' => $this->buildUrl($item),
+            '#attributes' => [],
+          ];
+
           if ($item->options['new_window']) {
             $item_value['heading_text']['#attributes']['target'] = '_blank';
           }
         }
+        // No link, just text.
+        else {
+          $item_value['heading_text'] = $item->title;
+        }
 
-        $item_value['options']['tag'] = $tag;
+        $item_value['options']['tag'] = $this->getSettings()['tag'];
 
         // Remove keys from the $item_value that aren't needed anymore.
         unset($item_value['title']);
