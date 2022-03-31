@@ -108,10 +108,6 @@ class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
 
         $item_value['options']['tag'] = $this->getSettings()['tag'];
 
-        // Remove keys from the $item_value that aren't needed anymore.
-        unset($item_value['title']);
-        unset($item_value['options']['new_window']);
-
         // Update the item's value.
         $item->setValue($item_value);
 
