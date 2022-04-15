@@ -76,6 +76,10 @@ class AdvancedHeaderFieldItem extends LinkItem {
       ->setLabel(t('URI'))
       ->setRequired(FALSE);
 
+    $properties['subtitle'] = DataDefinition::create('string')
+      ->setLabel(t('Subtitle'))
+      ->setRequired(FALSE);
+
     return $properties;
   }
 
