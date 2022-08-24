@@ -114,6 +114,7 @@ function template_preprocess_advanced_header_field(&$variables) {
  *   The block class for the advanced_header_field.
  * @param object $item
  *   The entire AdvancedHeaderFieldItem object or a generic object.
+ *
  * @return string
  *   The modifier classes for the advanced_header_field.
  */
@@ -128,6 +129,12 @@ function _get_advanced_header_field_modifier_css_classes(string $block_css_class
 
   foreach ($item->options['styles'] as $style) {
     $modifier_css_classes[] = $block_css_class . '--style-' . $style;
+  }
+
+  // "visually-hidden" is a class from Drupal and doesn't require the
+  // $block_css_class prefix.
+  if ($item->options['visually_hidden']) {
+    $modifier_css_classes[] = 'visually-hidden';
   }
 
   return implode(' ', $modifier_css_classes);
