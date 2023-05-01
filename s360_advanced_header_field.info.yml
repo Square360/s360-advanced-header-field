@@ -2,4 +2,4 @@ name: 'S360 Advanced Header Field'
 description: 'Provides a customizable field type for heading text and optional subtitle.'
 type: module
 package: 'Field types'
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
