@@ -123,7 +123,7 @@ class AdvancedHeaderFieldItem extends LinkItem {
   /**
    * Formats the allowed_tags setting.
    */
-  private static function fieldSettingsFormAllowedTagsValidate(array &$element, FormStateInterface $form_state) {
+  public static function fieldSettingsFormAllowedTagsValidate(array &$element, FormStateInterface $form_state) {
     $values = $form_state->getValue($element['#parents']);
 
     $values = array_keys($element['#value']);
