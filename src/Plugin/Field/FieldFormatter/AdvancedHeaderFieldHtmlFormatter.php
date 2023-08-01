@@ -113,7 +113,7 @@ class AdvancedHeaderFieldHtmlFormatter extends LinkFormatter {
 
         $element[$delta] = [
           '#item' => $item,
-          '#theme' => 'advanced_header_field',
+          '#theme' => 's360_advanced_header_field',
         ];
       }
     }
