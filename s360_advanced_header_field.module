@@ -68,7 +68,8 @@ function s360_advanced_header_field_help($route_name, RouteMatchInterface $route
 function s360_advanced_header_field_theme() {
   $items = [];
 
-  $items['advanced_header_field'] = [
+  $items['s360_advanced_header_field'] = [
+    'template' => 'advanced-header-field',
     'render element' => 'elements',
   ];
 
@@ -78,7 +79,7 @@ function s360_advanced_header_field_theme() {
 /**
  * Prepares variables for advanced-header-field template.
  */
-function template_preprocess_advanced_header_field(&$variables) {
+function template_preprocess_s360_advanced_header_field(&$variables) {
   $elements = $variables['elements'];
   $block_css_class = 'advanced-header-field';
 
@@ -90,7 +91,7 @@ function template_preprocess_advanced_header_field(&$variables) {
     $variables['attributes'] = new Attribute();
     $variables['attributes']['class'] = [
       $block_css_class,
-      _get_advanced_header_field_modifier_css_classes($block_css_class, $item),
+      _get_s360_advanced_header_field_modifier_css_classes($block_css_class, $item),
     ];
 
     $variables['heading'] = [];
@@ -118,7 +119,7 @@ function template_preprocess_advanced_header_field(&$variables) {
  * @return string
  *   The modifier classes for the advanced_header_field.
  */
-function _get_advanced_header_field_modifier_css_classes(string $block_css_class, object $item) {
+function _get_s360_advanced_header_field_modifier_css_classes(string $block_css_class, object $item) {
   $modifier_css_classes = [];
 
   $modifier_css_classes[] = $block_css_class . '--heading-tag-' . $item->options['heading_tag'];
